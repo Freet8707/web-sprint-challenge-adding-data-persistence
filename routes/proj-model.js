@@ -9,6 +9,24 @@ const find = async () => {
     
 }
 
+const findResources = async () => {
+
+    const resourceList = await db("Resources")
+    
+    return resourceList
+    
+}
+
+const addResource = async (resource) => {
+
+    const newResource =  await db("Resources")
+        .insert(resource)
+
+    return newResource
+}
+
 module.exports = {
     find,
+    addResource,
+    findResources,
 }

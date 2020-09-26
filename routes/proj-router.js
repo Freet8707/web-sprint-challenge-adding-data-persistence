@@ -14,4 +14,22 @@ router.get("/", async (req, res, next) => {
 
 })
 
+router.get('/resources', async (req, res, next) => {
+    try {
+        const resourceList = await Projects.findResources()
+        res.json(resourceList)
+    } catch(err) {
+        next(err)
+    }
+})
+
+router.post("/resources", async (req, res, next) => {
+    try {
+        const newResource = await Projects.addResource(req.body)
+        res.json(newResource)
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router;
