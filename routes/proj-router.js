@@ -14,6 +14,15 @@ router.get("/", async (req, res, next) => {
 
 })
 
+router.post("/", async (req, res, next) => {
+    try {
+        const newProject = await Projects.addProject(req.body)
+        res.json(newProject)
+    } catch (err) {
+        next(err)
+    }
+})
+
 router.get('/resources', async (req, res, next) => {
     try {
         const resourceList = await Projects.findResources()
@@ -31,5 +40,24 @@ router.post("/resources", async (req, res, next) => {
         next(err)
     }
 })
+
+router.get('/tasks', async (req, res, next) => {
+    try {
+        const taskList = await Projects.findTasks()
+        res.json(taskList)
+    } catch(err) {
+        next(err)
+    }
+})
+
+router.post("/tasks", async (req, res, next) => {
+    try {
+        const newTask = await Projects.addResource(req.body)
+        res.json(newTask)
+    } catch (err) {
+        next(err)
+    }
+})
+
 
 module.exports = router;
