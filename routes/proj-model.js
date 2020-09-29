@@ -24,12 +24,32 @@ const findResources = async () => {
     
 }
 
-const addResource = async (resource) => {
+const findById = async (ID) => {
+    const foundResource = await db("Resources")
+        .select("*")
+        .where("ID", ID)
+    // console.log(foundResource[0])
+    return foundResource[0]
+}
+
+const projectAssign = async (projID, resourceID) => {
+
+    const newProjectResourceEntry = await db("Proj_Resources")
+        .insert({proj_ID: projID, resource_ID: resourceID})
+
+    console.log(newProjectResourceEntry)
+}
+
+const addResource = async (resource, projID) => {
 
     const newResource =  await db("Resources")
         .insert(resource)
 
-    return newResource
+    const foundResource = await findById(newResource[0])
+
+    projectAssign(projID, newResource[0])
+
+    return foundResource
 }
 
 const findTasks = async () => {

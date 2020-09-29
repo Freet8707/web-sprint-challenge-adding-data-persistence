@@ -32,13 +32,11 @@ router.get('/resources', async (req, res, next) => {
     }
 })
 
-router.post("/resources", async (req, res, next) => {
-    try {
-        const newResource = await Projects.addResource(req.body)
-        res.json(newResource)
-    } catch (err) {
-        next(err)
-    }
+router.post("/:id/resources", async (req, res) => {
+    
+    const newResource =  await Projects.addResource(req.body, req.params.id)
+    res.json(newResource)
+    
 })
 
 router.get('/tasks', async (req, res, next) => {
