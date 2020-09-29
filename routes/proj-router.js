@@ -39,6 +39,17 @@ router.post("/:id/resources", async (req, res) => {
     
 })
 
+router.get("/:id/project_resources", async (req, res, next) => {
+
+    try {
+        const projectResources = await Projects.findProjectResources(req.params.id)
+
+        res.json(projectResources)
+    } catch(err) {
+        next(err)
+    }
+})
+
 router.get('/tasks', async (req, res, next) => {
     try {
         const taskList = await Projects.findTasks()

@@ -24,7 +24,7 @@ const findResources = async () => {
     
 }
 
-const findById = async (ID) => {
+const findResourceByID = async (ID) => {
     const foundResource = await db("Resources")
         .select("*")
         .where("ID", ID)
@@ -45,16 +45,30 @@ const addResource = async (resource, projID) => {
     const newResource =  await db("Resources")
         .insert(resource)
 
-    const foundResource = await findById(newResource[0])
+    const foundResource = await findResourceByID(newResource[0])
 
     projectAssign(projID, newResource[0])
 
     return foundResource
 }
 
+const findProjectResources = async (projectID) => {
+
+    const project = await db("Proj_Resources as pj")
+        .innerJoin("Resources as r", "r.ID", "pj.resource_ID")
+        .select("*")
+        .where("pj.proj_ID", projectID)
+        // .groupBy("pj.proj_ID")
+
+    return project
+}
+
 const findTasks = async () => {
 
-    const taskList = await db("Tasks")
+    const taskList = await db("Tasks as t")
+        .innerJoin("Projects as p", "p.ID", "t.proj_id")
+        .select("p.ID as Project_ID", "t.task_number", "t.description")
+        .orderBy("task_number")
     
     return taskList
     
@@ -76,4 +90,5 @@ module.exports = {
     findResources,
     findTasks,
     addTask,
+    findProjectResources,
 }
